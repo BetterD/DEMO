@@ -1,6 +1,12 @@
+<!--
+ * @Descripttion: 
+ * @Author: Jason
+ * @Date: 2021-02-22 22:26:00
+ * @LastEditTime: 2021-02-22 23:25:13
+-->
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+
     <router-view/>
   </div>
 </template>
