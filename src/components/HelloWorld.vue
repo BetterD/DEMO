@@ -2,12 +2,12 @@
  * @Descripttion: 
  * @Author: Jason
  * @Date: 2021-02-22 22:26:00
- * @LastEditTime: 2021-02-22 22:44:43
+ * @LastEditTime: 2021-02-22 22:46:55
 -->
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h2>Essential Liwwnk</h2>
+    <h2>Essential Liqqqwwnk</h2>
     <ul>
       <li>
         <a href="https://vuejs.org" target="_blank">
