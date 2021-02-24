@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Jason
  * @Date: 2021-02-22 22:26:00
- * @LastEditTime: 2021-02-24 10:15:05
+ * @LastEditTime: 2021-02-24 19:39:41
 -->
 <template>
   <div id="app" class="view-resize">
@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import $ from "jquery";
 export default {
   name: "App"
 };

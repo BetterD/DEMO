@@ -2,7 +2,7 @@
  * @Descripttion:
  * @Author: Jason
  * @Date: 2021-02-22 23:28:01
- * @LastEditTime: 2021-02-24 16:44:38
+ * @LastEditTime: 2021-02-24 21:47:21
  */
 import Mock from "mockjs";
 Mock.mock("http://localhost:8080/login", {
@@ -76,19 +76,19 @@ Mock.mock("http://localhost:8080/getAqiLineData", {
     66
   ],
   expectYHeight: [
-    55,
-    70,
-    67,
-    72,
+    56,
+    77,
+    69,
+    74,
     66,
     59,
     65,
-    85,
+    90,
     68,
-    56,
-    58,
-    79,
-    80,
+    59,
+    59,
+    84,
+    86,
     102,
     70,
     49,
@@ -98,26 +98,26 @@ Mock.mock("http://localhost:8080/getAqiLineData", {
     69
   ],
   expectYLow: [
-    45,
-    60,
-    55,
-    66,
-    60,
-    50,
-    58,
-    80,
-    61,
-    50,
-    45,
-    66,
-    72,
-    91,
-    61,
-    41,
+    36,
+    57,
+    49,
     54,
-    98,
-    71,
-    61
+    46,
+    39,
+    45,
+    70,
+    48,
+    39,
+    39,
+    54,
+    56,
+    82,
+    50,
+    29,
+    30,
+    85,
+    54,
+    49
   ],
   percent: "69",
   height: "10",

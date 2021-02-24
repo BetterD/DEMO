@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Jason
  * @Date: 2021-02-22 22:50:14
- * @LastEditTime: 2021-02-24 16:59:21
+ * @LastEditTime: 2021-02-24 22:12:21
 -->
 
 <template>
@@ -21,6 +21,7 @@
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"
+            @change="dateChange"
           >
           </el-date-picker></div
       ></el-col>
@@ -123,6 +124,7 @@
   </div>
 </template>
 <script>
+import moment from "moment";
 export default {
   data() {
     return {
@@ -174,6 +176,16 @@ export default {
     this.getAqiChartData();
   },
   methods: {
+    dateChange() {
+      this.$message({
+        message:
+          "选择了日期 : " +
+          moment(this.date[0]).format("YYYY-MM-DD") +
+          "  至  " +
+          moment(this.date[1]).format("YYYY-MM-DD"),
+        type: "success"
+      });
+    },
     initAqiLevleDescription() {
       this.$api.pmLine.getAqiLevleDes().then(res => {
         this.aqiLevleDescription = res.data;
@@ -193,7 +205,6 @@ export default {
       });
     },
     renderApiItem(params, api) {
-      console.log(api);
       let xValue = api.value(0);
       let highPoint = api.coord([xValue, api.value(1)]);
       let lowPoint = api.coord([xValue, api.value(2)]);
@@ -238,6 +249,7 @@ export default {
         ]
       };
     },
+
     initAqiChart() {
       let chartDom = this.$refs.aqiLine;
       let aqiLineChart = this.$echarts.init(chartDom);
@@ -248,11 +260,42 @@ export default {
       for (let i in expectX) {
         exceptData.push([expectX[i], expectH[i], expectL[i]]);
       }
-      console.log(exceptData);
       let option;
       option = {
+        legend: {
+          top: 30,
+          data: [{ name: "实况监测" }, { name: "人工预报", icon: "rect" }]
+        },
         tooltip: {
-          trigger: "axis"
+          trigger: "axis",
+          backgroundColor: "rgba(255,255,255,0.8)",
+          borderColor: "rgb(39,211,252)",
+          borderRadius: 8,
+          borderWidth: 1,
+          textStyle: {
+            color: "black"
+          },
+          formatter: datas => {
+            let res =
+              '<div class="showBoxTip">' +
+              datas[0].name +
+              "<br/>" +
+              datas[0].seriesName +
+              " : " +
+              datas[0].data +
+              "<br/>" +
+              datas[1].seriesName +
+              " : " +
+              datas[1].data[2] +
+              "-" +
+              datas[1].data[1] +
+              "</div>";
+
+            // for (var i = 0, length = datas.length; i < length; i++) {
+            //   res += datas[i].seriesName + "：" + datas[i].data + "<br/>";
+            // }
+            return res;
+          }
         },
         grid: {
           x: 160,
@@ -278,26 +321,39 @@ export default {
         series: [
           {
             data: this.aqiLineData.realY,
+            name: "实况监测",
             type: "line",
-            smooth: true
+            color: "rgb(255,171,35)",
+            showSymbol: false,
+            smooth: true,
+            symbol: "circle"
           },
           {
             type: "custom",
-            name: "error",
+            name: "人工预报",
+            color: "rgb(0,207,0)",
             itemStyle: {
               normal: {
                 borderWidth: 1.5
               }
             },
             renderItem: function(params, api) {
-              console.log(api);
               let xValue = api.value(0);
               let highPoint = api.coord([xValue, api.value(1)]);
               let lowPoint = api.coord([xValue, api.value(2)]);
-              let style = api.style({
-                stroke: api.visual("color"),
-                fill: null
-              });
+              let style;
+              if (api.value(1) > 80) {
+                style = api.style({
+                  stroke: "red",
+                  fill: "red"
+                });
+              } else {
+                style = api.style({
+                  stroke: api.visual("color"),
+                  fill: api.visual("color")
+                });
+              }
+
               return {
                 type: "group",
                 children: [
@@ -307,7 +363,7 @@ export default {
                     shape: {
                       cx: highPoint[0],
                       cy: highPoint[1],
-                      r: 1
+                      r: 2.5
                     },
                     style: style
                   },
@@ -328,7 +384,7 @@ export default {
                     shape: {
                       cx: lowPoint[0],
                       cy: lowPoint[1],
-                      r: 1
+                      r: 2.5
                     },
                     style: style
                   }
@@ -419,6 +475,11 @@ export default {
   }
 };
 </script>
+<style>
+.showBoxTip {
+  text-align: left;
+}
+</style>
 <style lang="scss" scoped>
 .container {
   width: auto;
@@ -440,6 +501,7 @@ export default {
       color: rgb(39, 211, 252);
     }
   }
+
   .box {
     width: auto;
     margin: 1rem 2rem;
