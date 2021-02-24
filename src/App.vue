@@ -2,24 +2,24 @@
  * @Descripttion: 
  * @Author: Jason
  * @Date: 2021-02-22 22:26:00
- * @LastEditTime: 2021-02-22 23:25:13
+ * @LastEditTime: 2021-02-24 10:15:05
 -->
 <template>
-  <div id="app">
-
-    <router-view/>
+  <div id="app" class="view-resize">
+    <router-view />
   </div>
 </template>
 
 <script>
+import $ from "jquery";
 export default {
-  name: 'App'
-}
+  name: "App"
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

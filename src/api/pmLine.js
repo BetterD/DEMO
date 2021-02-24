@@ -2,31 +2,33 @@
  * @Descripttion:
  * @Author: Jason
  * @Date: 2021-02-22 23:30:41
- * @LastEditTime: 2021-02-23 23:54:42
+ * @LastEditTime: 2021-02-24 16:05:35
  */
 import request from "@/utils/request";
-
-const AuthLoginByAccount = "/login"; //账号登录
-export function login(data) {
-  return request({
-    url: AuthLoginByAccount,
-    method: "get",
-    data
-  });
-}
-const AqiLevleDes = "/aqiLevleDes"; //账号登录
-export function getAqiLevleDes(data) {
-  return request({
-    url: AqiLevleDes,
-    method: "get",
-    data
-  });
-}
-const AqiRangeDes = "/aqiRangeDes"; //账号登录
-export function getAqiRangeDes(data) {
-  return request({
-    url: AqiRangeDes,
-    method: "get",
-    data
-  });
-}
+const pmLine = {
+  login: data =>
+    request({
+      method: "get",
+      url: "/login",
+      data
+    }),
+  getAqiLevleDes: data =>
+    request({
+      method: "get",
+      url: "/aqiLevleDes",
+      data
+    }),
+  getAqiRangeDes: data =>
+    request({
+      method: "get",
+      url: "/aqiRangeDes",
+      data
+    }),
+  getAqiLineData: data =>
+    request({
+      method: "get",
+      url: "/getAqiLineData",
+      data
+    })
+};
+export default pmLine;

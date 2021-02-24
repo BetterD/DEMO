@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Jason
  * @Date: 2021-02-22 22:50:14
- * @LastEditTime: 2021-02-23 23:56:36
+ * @LastEditTime: 2021-02-24 16:59:21
 -->
 
 <template>
@@ -28,14 +28,17 @@
     <el-divider></el-divider>
     <el-row class="box">
       <div class="tip">污染等级</div>
-      <el-col :span="17"
-        >11
-        <div class="box-line"></div
-      ></el-col>
+      <el-col :span="17"> <div class="box-line"></div></el-col>
       <el-col :span="7"
         ><div class="box-circle">
           <div ref="aqiLevlePie" class="aqi-pie-contianer"></div>
-          <div class="circle_text">
+          <div
+            class="circle_text"
+            :style="{
+              top: circleTextTop + 'px',
+              right: circleTextRight + 'px'
+            }"
+          >
             <div class="circle_num">{{ aqiLevleDescription.percent }} %</div>
             <div class="circle_numLabel">AQI等级</div>
           </div>
@@ -72,14 +75,17 @@
     </el-row>
     <el-row class="box">
       <div class="tip">AQI</div>
-      <el-col :span="17"
-        >11
-        <div class="box-line"></div
-      ></el-col>
+      <el-col :span="17"> <div class="box-line" ref="aqiLine"></div></el-col>
       <el-col :span="7"
         ><div class="box-circle">
           <div ref="aqiRangePie" class="aqi-pie-contianer"></div>
-          <div class="circle_text">
+          <div
+            class="circle_text"
+            :style="{
+              top: circleTextTop + 'px',
+              right: circleTextRight + 'px'
+            }"
+          >
             <div class="circle_num">{{ aqiRangeDescription.percent }}%</div>
             <div class="circle_numLabel">AQI范围</div>
           </div>
@@ -117,7 +123,6 @@
   </div>
 </template>
 <script>
-import { login, getAqiLevleDes, getAqiRangeDes } from "@/api/pmLine";
 export default {
   data() {
     return {
@@ -154,29 +159,189 @@ export default {
       },
       date: "",
       aqiLevleDescription: {},
-      aqiRangeDescription: {}
+      aqiRangeDescription: {},
+      circleTextTop: "",
+      circleTextRight: "",
+      aqiLineData: {}
     };
   },
   mounted() {
-    login().then(res => {
-      console.log(res);
-    });
-
+    let wrap = document.getElementsByClassName("aqi-pie-contianer")[0];
+    this.circleTextTop = parseFloat(getComputedStyle(wrap)["height"]) / 2 - 30;
+    this.circleTextRight = parseFloat(getComputedStyle(wrap)["width"]) / 2 - 85;
     this.initAqiLevleDescription();
     this.initAqiRangeDescription();
+    this.getAqiChartData();
   },
   methods: {
     initAqiLevleDescription() {
-      getAqiLevleDes().then(res => {
+      this.$api.pmLine.getAqiLevleDes().then(res => {
         this.aqiLevleDescription = res.data;
         this.initAqiLevlePie();
       });
     },
     initAqiRangeDescription() {
-      getAqiRangeDes().then(res => {
+      this.$api.pmLine.getAqiRangeDes().then(res => {
         this.aqiRangeDescription = res.data;
         this.initAqiRangePie();
       });
+    },
+    getAqiChartData() {
+      this.$api.pmLine.getAqiLineData().then(res => {
+        this.aqiLineData = res.data;
+        this.initAqiChart();
+      });
+    },
+    renderApiItem(params, api) {
+      console.log(api);
+      let xValue = api.value(0);
+      let highPoint = api.coord([xValue, api.value(1)]);
+      let lowPoint = api.coord([xValue, api.value(2)]);
+      let style = api.style({
+        stroke: api.visual("color"),
+        fill: null
+      });
+      return {
+        type: "group",
+        children: [
+          {
+            type: "circle",
+            transition: ["shape"],
+            shape: {
+              cx: highPoint[0],
+              cy: highPoint[1],
+              r: 1
+            },
+            style: style
+          },
+          {
+            type: "line",
+            transition: ["shape"],
+            shape: {
+              x1: highPoint[0],
+              y1: highPoint[1],
+              x2: lowPoint[0],
+              y2: lowPoint[1]
+            },
+            style: style
+          },
+          {
+            type: "circle",
+            transition: ["shape"],
+            shape: {
+              cx: lowPoint[0],
+              cy: lowPoint[1],
+              r: 1
+            },
+            style: style
+          }
+        ]
+      };
+    },
+    initAqiChart() {
+      let chartDom = this.$refs.aqiLine;
+      let aqiLineChart = this.$echarts.init(chartDom);
+      let expectX = this.aqiLineData.X;
+      let expectH = this.aqiLineData.expectYHeight;
+      let expectL = this.aqiLineData.expectYLow;
+      let exceptData = [];
+      for (let i in expectX) {
+        exceptData.push([expectX[i], expectH[i], expectL[i]]);
+      }
+      console.log(exceptData);
+      let option;
+      option = {
+        tooltip: {
+          trigger: "axis"
+        },
+        grid: {
+          x: 160,
+          y: 80,
+          x2: 5,
+          y2: 80
+        },
+        dataZoom: [
+          {
+            type: "slider"
+          },
+          {
+            type: "inside"
+          }
+        ],
+        xAxis: {
+          type: "category",
+          data: this.aqiLineData.X
+        },
+        yAxis: {
+          type: "value"
+        },
+        series: [
+          {
+            data: this.aqiLineData.realY,
+            type: "line",
+            smooth: true
+          },
+          {
+            type: "custom",
+            name: "error",
+            itemStyle: {
+              normal: {
+                borderWidth: 1.5
+              }
+            },
+            renderItem: function(params, api) {
+              console.log(api);
+              let xValue = api.value(0);
+              let highPoint = api.coord([xValue, api.value(1)]);
+              let lowPoint = api.coord([xValue, api.value(2)]);
+              let style = api.style({
+                stroke: api.visual("color"),
+                fill: null
+              });
+              return {
+                type: "group",
+                children: [
+                  {
+                    type: "circle",
+                    transition: ["shape"],
+                    shape: {
+                      cx: highPoint[0],
+                      cy: highPoint[1],
+                      r: 1
+                    },
+                    style: style
+                  },
+                  {
+                    type: "line",
+                    transition: ["shape"],
+                    shape: {
+                      x1: highPoint[0],
+                      y1: highPoint[1],
+                      x2: lowPoint[0],
+                      y2: lowPoint[1]
+                    },
+                    style: style
+                  },
+                  {
+                    type: "circle",
+                    transition: ["shape"],
+                    shape: {
+                      cx: lowPoint[0],
+                      cy: lowPoint[1],
+                      r: 1
+                    },
+                    style: style
+                  }
+                ]
+              };
+            },
+            data: exceptData,
+            z: 100
+          }
+        ]
+      };
+
+      option && aqiLineChart.setOption(option);
     },
     initAqiLevlePie() {
       let chartDom = this.$refs.aqiLevlePie;
@@ -223,6 +388,7 @@ export default {
           {
             name: "AQI",
             type: "pie",
+
             radius: ["80%", "70%"],
             color: ["rgb(95, 120, 194)", "rgb(237, 241, 244)"],
             avoidLabelOverlap: false,
@@ -298,8 +464,6 @@ export default {
         position: absolute;
         width: 10rem;
         text-align: center;
-        right: 7.5rem;
-        top: 6rem; /*top: 60px;*/
         .circle_num {
           font-size: 2rem;
           line-height: 2rem;
@@ -333,6 +497,7 @@ export default {
       }
     }
     .box-line {
+      height: 20rem;
     }
   }
 }
