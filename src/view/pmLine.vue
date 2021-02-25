@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Jason
  * @Date: 2021-02-22 22:50:14
- * @LastEditTime: 2021-02-25 17:00:48
+ * @LastEditTime: 2021-02-25 22:56:02
 -->
 
 <template>
@@ -1017,7 +1017,7 @@ export default {
 <style lang="scss" scoped>
 .container {
   width: auto;
-  margin: 32px 32px;
+  margin: 60px 32px 0 32px;
   height: 800px;
   background: rgb(246, 249, 252);
   border-radius: 2px;
