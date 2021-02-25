@@ -2,7 +2,7 @@
  * @Descripttion:
  * @Author: Jason
  * @Date: 2021-02-22 23:28:01
- * @LastEditTime: 2021-02-24 21:47:21
+ * @LastEditTime: 2021-02-25 15:26:29
  */
 import Mock from "mockjs";
 Mock.mock("http://localhost:8080/login", {
@@ -30,7 +30,6 @@ Mock.mock("http://localhost:8080/aqiRangeDes", {
 });
 Mock.mock("http://localhost:8080/getAqiLineData", {
   //输出数据
-  expect: "",
   X: [
     "2021-02-04",
     "2021-02-05",
@@ -118,10 +117,30 @@ Mock.mock("http://localhost:8080/getAqiLineData", {
     85,
     54,
     49
-  ],
-  percent: "69",
-  height: "10",
-  low: "21",
-  expect: "42",
-  real: "41"
+  ]
+});
+Mock.mock("http://localhost:8080/getAqiLevleData", {
+  //输出数据
+  data: [
+    { date: "2021-02-04", except: [0, 1], real: 0, deviation: 0 },
+    { date: "2021-02-05", except: [0, 1], real: 0, deviation: 0 },
+    { date: "2021-02-06", except: [1, 2], real: 0, deviation: 1 },
+    { date: "2021-02-07", except: [0], real: 0, deviation: 0 },
+    { date: "2021-02-08", except: [0, 1], real: 0, deviation: 0 },
+    { date: "2021-02-09", except: [0, 1], real: 0, deviation: 0 },
+    { date: "2021-02-10", except: [3, 5], real: 2, deviation: 1 },
+    { date: "2021-02-11", except: [0], real: 0, deviation: 0 },
+    { date: "2021-02-12", except: [0, 1], real: 0, deviation: 0 },
+    { date: "2021-02-13", except: [0, 1], real: 1, deviation: 0 },
+    { date: "2021-02-14", except: [0, 1], real: 4, deviation: 2 },
+    { date: "2021-02-15", except: [0, 1], real: 0, deviation: 0 },
+    { date: "2021-02-16", except: [0], real: 0, deviation: 0 },
+    { date: "2021-02-17", except: [0, 1], real: 0, deviation: 0 },
+    { date: "2021-02-18", except: [0, 1], real: 1, deviation: 0 },
+    { date: "2021-02-19", except: [0, 1], real: 0, deviation: 0 },
+    { date: "2021-02-20", except: [0, 1], real: 0, deviation: 0 },
+    { date: "2021-02-21", except: [0, 1], real: 1, deviation: 0 },
+    { date: "2021-02-22", except: [0, 1], real: 0, deviation: 0 },
+    { date: "2021-02-23", except: [0, 1], real: 0, deviation: 0 }
+  ]
 });
