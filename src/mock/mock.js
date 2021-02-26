@@ -2,7 +2,7 @@
  * @Descripttion:
  * @Author: Jason
  * @Date: 2021-02-22 23:28:01
- * @LastEditTime: 2021-02-26 16:20:03
+ * @LastEditTime: 2021-02-26 22:41:18
  */
 import Mock from "mockjs";
 Mock.mock("http://localhost:8080/login", {
@@ -165,4 +165,35 @@ Mock.mock("http://localhost:8080/getStationData", {
     { name: "睢宁监控站", coord: [117.94, 34.89], value: 20, type: 1 },
     { name: "太仓监控站", coord: [121.1, 31.45], value: 80, type: 1 }
   ]
+});
+Mock.mock("http://localhost:8080/getTimeListData", {
+  data: [
+    "2021-02-03 21时",
+    "2021-02-03 22时",
+    "2021-02-03 23时",
+    "2021-02-04 00时",
+    "2021-02-04 01时",
+    "2021-02-04 02时",
+    "2021-02-04 03时",
+    "2021-02-04 04时",
+    "2021-02-04 05时",
+    "2021-02-04 06时",
+    "2021-02-04 07时",
+    "2021-02-04 08时",
+    "2021-02-04 09时",
+    "2021-02-04 10时",
+    "2021-02-04 11时",
+    "2021-02-04 12时"
+  ]
+});
+Mock.mock("http://localhost:8080/getStationDecData", {
+  data: {
+    guo: 72,
+    sheng: 90,
+    bian: 6,
+    zhi: 26,
+    chuang: 14,
+    nong: 10,
+    sc: 11
+  }
 });

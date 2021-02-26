@@ -2,17 +2,17 @@
  * @Descripttion: 
  * @Author: Jason
  * @Date: 2021-02-22 22:50:14
- * @LastEditTime: 2021-02-26 09:25:32
+ * @LastEditTime: 2021-02-27 01:23:02
 -->
 
 <template>
   <div class="line-chart-container">
+    <!-- 前往地图图表界面 -->
     <div class="change-button">
-      <el-button type="primary" @click="goPmMap"
-        >查看PM<font class="pm-small">2.5</font>实况分布</el-button
-      >
+      <el-button type="primary" @click="goPmMap">查看PM₂.₅实况分布</el-button>
     </div>
     <el-row>
+      <!-- 顶部时间选择器 -->
       <el-col :span="24"
         ><div class="header">
           <i class="el-icon-time head-icon"></i>
@@ -33,14 +33,17 @@
     </el-row>
     <el-divider></el-divider>
     <el-row class="box">
+      <!-- 污染等级模块 -->
       <div class="tip">污染等级</div>
       <el-col :span="17">
+        <!-- 污染等级图表容器 -->
         <div class="box-line" ref="aqiLevle"></div>
         <div class="line-name-real line-name-font">实况监测</div>
         <div class="line-name-exp line-name-font">人工预报</div>
       </el-col>
       <el-col :span="7"
         ><div class="box-circle">
+          <!-- 污染等级信息图表 -->
           <div ref="aqiLevlePie" class="aqi-pie-contianer"></div>
           <div
             class="circle_text"
@@ -85,6 +88,7 @@
     </el-row>
     <el-row class="box">
       <div class="tip">AQI</div>
+      <!-- AQI图表 -->
       <el-col :span="17"> <div class="box-line" ref="aqiLine"></div></el-col>
       <el-col :span="7"
         ><div class="box-circle">
@@ -208,17 +212,11 @@ export default {
       this.getAqiChartData(); //初始化AQI折现数据
       this.getAqiLevleChartData(); //初始化污染等级数据
     },
-    /**
-     * @description:前往Pm2.5分布
-     * @param {*}
-     */
+    //  前往Pm2.5分布
     goPmMap() {
       this.$router.push("pmMap");
     },
-    /**
-     * @description: 日期选择器触发
-     * @param {*}
-     */
+    //  日期选择器触发
     dateChange() {
       this.$message({
         message:
@@ -229,50 +227,35 @@ export default {
         type: "success"
       });
     },
-    /**
-     * @description: 初始化AQI等级数据
-     * @param {*}
-     */
+    // 初始化AQI等级数据
     initAqiLevleDescription() {
       this.$api.pmLine.getAqiLevleDes().then(res => {
         this.aqiLevleDescription = res.data;
         this.initAqiLevlePie();
       });
     },
-    /**
-     * @description: 初始化AQI范围数据
-     * @param {*}
-     */
+    // 初始化AQI范围数据
     initAqiRangeDescription() {
       this.$api.pmLine.getAqiRangeDes().then(res => {
         this.aqiRangeDescription = res.data;
         this.initAqiRangePie();
       });
     },
-    /**
-     * @description: 初始化AQI折现数据
-     * @param {*}
-     */
+    //  初始化AQI折现数据
     getAqiChartData() {
       this.$api.pmLine.getAqiLineData().then(res => {
         this.aqiLineData = res.data;
         this.initAqiChart();
       });
     },
-    /**
-     * @description: 初始化污染等级数据
-     * @param {*}
-     */
+    // 初始化污染等级数据
     getAqiLevleChartData() {
       this.$api.pmLine.getAqiLevleData().then(res => {
         this.aqiLevleData = res.data.data;
         this.initAqiLevleChart();
       });
     },
-    /**
-     * @description: 生成AQI文字
-     * @param {*} val
-     */
+    //  生成AQI文字
     getAqiDec(val) {
       switch (val) {
         case 0:
@@ -291,16 +274,15 @@ export default {
           return "";
       }
     },
-    /**
-     * @description: 初始化污染等级表格
-     * @param {*}
-     */
+    //  初始化污染等级表格
     initAqiLevleChart() {
       let xData = [];
       let exceptData = [];
+      // 污染等级X轴
       for (let i in this.aqiLevleData) {
         xData.push(this.aqiLevleData[i].date);
       }
+      //处理污染等级数据
       for (let i in this.aqiLevleData) {
         let heightData;
         if (this.aqiLevleData[i].except.length == 1) {
@@ -316,7 +298,6 @@ export default {
           this.aqiLevleData[i].deviation
         ]);
       }
-      // console.log(exceptData);
       let chartDom = this.$refs.aqiLevle;
       this.aqiLevleChart = this.$echarts.init(chartDom);
       let option;
@@ -344,6 +325,7 @@ export default {
           axisPointer: {
             type: "shadow"
           },
+          // 自定义显示内容
           formatter: datas => {
             let realdec;
             let exceptdec;
@@ -373,9 +355,6 @@ export default {
               exceptdec +
               "</div>";
 
-            // for (var i = 0, length = datas.length; i < length; i++) {
-            //   res += datas[i].seriesName + "：" + datas[i].data + "<br/>";
-            // }
             return res;
           }
         },
@@ -454,8 +433,6 @@ export default {
                   },
                   label: {
                     show: false
-                    //  position: 'center',
-                    //  formatter: '{a}',
                   }
                 }
               },
@@ -522,6 +499,7 @@ export default {
               let style2;
               let style3;
               let path;
+              // 决定各类污染等级style信息
               let res = { type: "group", children: [] };
               switch (api.value(4)) {
                 case 0:
@@ -763,6 +741,7 @@ export default {
 
       option && this.aqiLevleChart.setOption(option);
     },
+    // 初始化AQI图表
     initAqiChart() {
       let chartDom = this.$refs.aqiLine;
       this.aqiLineChart = this.$echarts.init(chartDom);
@@ -804,9 +783,6 @@ export default {
               datas[1].data[1] +
               "</div>";
 
-            // for (var i = 0, length = datas.length; i < length; i++) {
-            //   res += datas[i].seriesName + "：" + datas[i].data + "<br/>";
-            // }
             return res;
           }
         },
@@ -912,6 +888,7 @@ export default {
 
       option && this.aqiLineChart.setOption(option);
     },
+    // 初始化AQI描述图表
     initAqiLevlePie() {
       let chartDom = this.$refs.aqiLevlePie;
       this.aqiPieChart = this.$echarts.init(chartDom);
@@ -948,6 +925,7 @@ export default {
 
       option && this.aqiPieChart.setOption(option);
     },
+    // 初始化AQI范围描述图表
     initAqiRangePie() {
       let chartDom = this.$refs.aqiRangePie;
       this.aqiRangePieChart = this.$echarts.init(chartDom);
