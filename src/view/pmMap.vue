@@ -431,7 +431,8 @@ export default {
             text: ["", "PM₂.₅(aqi)"],
             textStyle: {
               fontWeight: "bolder",
-              fontSize: 13
+              fontSize: 13,
+              color: "white"
             },
             inRange: {
               color: [
