@@ -2,7 +2,7 @@
  * @Descripttion:
  * @Author: Jason
  * @Date: 2021-02-26 15:32:28
- * @LastEditTime: 2021-02-27 01:14:45
+ * @LastEditTime: 2021-02-27 03:07:28
  */
 
 import request from "@/utils/request";
@@ -26,6 +26,13 @@ const pmMap = {
     request({
       method: "get",
       url: "/getStationDecData",
+      data
+    }),
+  //获取温度信息
+  getTepData: data =>
+    request({
+      method: "get",
+      url: "/getTepData",
       data
     })
 };

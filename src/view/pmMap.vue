@@ -271,6 +271,7 @@
 // echart 百度地图组件
 import "echarts/extension/bmap/bmap";
 import $ from "jquery";
+import geoJson from "../assets/jiangsu.json";
 // echart svg数据
 const fiveStar =
   "path://M1077.529145 388.206248C1072.06379 371.533456 1056.511742 360.326019 1039.008769 360.326019L686.956883 360.326019 578.161726 27.824884C572.876243 11.207437 557.37954 0 539.765877 0 522.262904 0 506.710856 11.207437 501.370028 27.700357L392.450343 360.326019 40.467639 360.326019C22.909321 360.326019 7.398781 371.533456 2.002608 388.206248-3.462747 404.713004 2.528389 422.963139 16.682967 433.119014L301.504067 638.533348 192.764255 971.214355C187.243555 987.776457 193.234691 1005.860556 207.444614 1016.127121 221.474665 1026.338342 240.845544 1026.338342 254.944776 1016.127121L539.765877 810.588261 824.642322 1016.127121C831.629675 1021.191223 839.972989 1023.820128 848.371649 1023.820128 856.701127 1023.820128 865.099787 1021.191223 872.142485 1016.127121 886.297062 1005.860556 892.288199 987.776457 886.767498 971.214355L778.138377 638.533348 1062.793441 433.119014C1076.934183 422.963139 1082.869974 404.713004 1077.529145 388.206248Z";
@@ -310,6 +311,7 @@ export default {
       bmap: {}, //百度地图对象
       stationData: [], //站点数据
       stationDec: {}, //站点图例个数
+      tepData: [], //温度数据
       wHeight: 1080 //自适应高度 用于图表渲染
     };
   },
@@ -349,26 +351,24 @@ export default {
     getStationChartData() {
       this.$api.pmMap.getStationData().then(res => {
         this.stationData = res.data.data;
+        this.getTepData();
+      });
+    },
+    //api获取温度chart数据源
+    getTepData() {
+      this.$api.pmMap.getTepData().then(res => {
+        this.tepData = res.data.data;
         this.initChart();
       });
     },
-    /**
-     * @description: 获取事件列表数据源
-     * @param {*}
-     * @return {*}
-     */
+    //  获取事件列表数据源
     getTimeListData() {
       this.$api.pmMap.getTimeListData().then(res => {
         this.timeList = res.data.data;
       });
     },
-    /**
-     * @description: 地图数据处理
-     * @param {*} data
-     * @return {*}
-     */
+    //  地图数据处理
     convertData(data) {
-      console.log(data);
       let res = [];
       let value;
       for (let i in data) {
@@ -386,6 +386,20 @@ export default {
       let chartDom = this.$refs.mapContainer;
       this.mapChart = this.$echarts.init(chartDom);
       let option;
+      let points = [];
+      let val = [];
+      for (let i in geoJson.children) {
+        for (let j in this.tepData) {
+          if (this.tepData[j].name == geoJson.children[i].name) {
+            points.push([
+              geoJson.children[i].log,
+              geoJson.children[i].lat,
+              this.tepData[j].value
+            ]);
+          }
+        }
+      }
+      console.log(points);
       option = {
         tooltip: {
           trigger: "item",
@@ -432,7 +446,7 @@ export default {
             textStyle: {
               fontWeight: "bolder",
               fontSize: 13,
-              color: "white"
+              color: "black"
             },
             inRange: {
               color: [
@@ -444,9 +458,33 @@ export default {
                 "rgb(126,0,35)"
               ]
             }
+          },
+          {
+            id: "tep",
+            show: true,
+            left: "right",
+            orient: "horizontal",
+            min: 0,
+            max: 40,
+            dimension: 2,
+            text: ["℃", "气温"],
+            seriesIndex: 0,
+            calculable: false,
+            realtime: false,
+            inRange: {
+              color: ["blue", "blue", "green", "yellow", "red"]
+            }
           }
         ],
         series: [
+          {
+            type: "heatmap",
+            visualMap: "tep",
+            coordinateSystem: "bmap",
+            data: points,
+            pointSize: 25,
+            blurSize: 50
+          },
           {
             name: "pm2.5",
             type: "scatter",
@@ -570,7 +608,7 @@ export default {
     .station_legend {
       background-color: rgba(255, 255, 255, 0.8);
       position: absolute;
-      bottom: 30px;
+      bottom: 80px;
       right: 20px;
       text-align: left;
       font-size: 14px;

@@ -2,7 +2,7 @@
  * @Descripttion:
  * @Author: Jason
  * @Date: 2021-02-22 23:28:01
- * @LastEditTime: 2021-02-26 22:41:18
+ * @LastEditTime: 2021-02-27 03:32:38
  */
 import Mock from "mockjs";
 Mock.mock("http://localhost:8080/login", {
@@ -196,4 +196,82 @@ Mock.mock("http://localhost:8080/getStationDecData", {
     nong: 10,
     sc: 11
   }
+});
+Mock.mock("http://localhost:8080/getTepData", {
+  data: [
+    { name: "南京", value: "40" },
+    { name: "江宁", value: "20" },
+    { name: "六合", value: "20" },
+    { name: "江浦", value: "20" },
+    { name: "徐州", value: "20" },
+    { name: "连云港", value: "20" },
+    { name: "南通", value: "40" },
+    { name: "苏州", value: "40" },
+    { name: "无锡", value: "40" },
+    { name: "常州", value: "40" },
+    { name: "丰县", value: "40" },
+    { name: "沛县", value: "40" },
+    { name: "赣榆", value: "25" },
+    { name: "东海", value: "25" },
+    { name: "新沂", value: "25" },
+    { name: "邳县", value: "25" },
+    { name: "睢宁", value: "15" },
+    { name: "铜山", value: "15" },
+    { name: "清江", value: "15" },
+    { name: "灌云", value: "15" },
+    { name: "灌南", value: "30" },
+    { name: "沭阳", value: "30" },
+    { name: "宿迁", value: "30" },
+    { name: "泗阳", value: "30" },
+    { name: "盱眙", value: "30" },
+    { name: "涟水", value: "30" },
+    { name: "淮阴", value: "30" },
+    { name: "淮安", value: "35" },
+    { name: "洪泽", value: "35" },
+    { name: "泗洪", value: "35" },
+    { name: "金湖", value: "35" },
+    { name: "盐城", value: "20" },
+    { name: "滨海", value: "20" },
+    { name: "阜宁", value: "20" },
+    { name: "射阳", value: "20" },
+    { name: "建湖", value: "20" },
+    { name: "响水", value: "20" },
+    { name: "大丰", value: "20" },
+    { name: "东台", value: "20" },
+    { name: "海安", value: "20" },
+    { name: "如皋", value: "20" },
+    { name: "如东", value: "20" },
+    { name: "启东", value: "15" },
+    { name: "海门", value: "15" },
+    { name: "南通", value: "15" },
+    { name: "扬州", value: "15" },
+    { name: "宝应", value: "15" },
+    { name: "兴化", value: "15" },
+    { name: "高邮", value: "15" },
+    { name: "泰兴", value: "15" },
+    { name: "泰县", value: "20" },
+    { name: "泰州", value: "20" },
+    { name: "靖江", value: "20" },
+    { name: "江都", value: "20" },
+    { name: "邗江", value: "20" },
+    { name: "仪征", value: "20" },
+    { name: "镇江", value: "20" },
+    { name: "丹徒", value: "20" },
+    { name: "扬中", value: "20" },
+    { name: "丹阳", value: "20" },
+    { name: "武进", value: "15" },
+    { name: "宜兴", value: "15" },
+    { name: "金坛", value: "15" },
+    { name: "溧阳", value: "15" },
+    { name: "句容", value: "20" },
+    { name: "溧水", value: "20" },
+    { name: "高淳", value: "20" },
+    { name: "江阴", value: "6" },
+    { name: "沙洲", value: "20" },
+    { name: "常熟", value: "20" },
+    { name: "太仓", value: "20" },
+    { name: "昆山", value: "20" },
+    { name: "吴县", value: "20" },
+    { name: "吴江", value: "20" }
+  ]
 });
