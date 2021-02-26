@@ -2,7 +2,7 @@
  * @Descripttion:
  * @Author: Jason
  * @Date: 2021-02-22 23:28:01
- * @LastEditTime: 2021-02-25 15:26:29
+ * @LastEditTime: 2021-02-26 16:20:03
  */
 import Mock from "mockjs";
 Mock.mock("http://localhost:8080/login", {
@@ -142,5 +142,27 @@ Mock.mock("http://localhost:8080/getAqiLevleData", {
     { date: "2021-02-21", except: [0, 1], real: 1, deviation: 0 },
     { date: "2021-02-22", except: [0, 1], real: 0, deviation: 0 },
     { date: "2021-02-23", except: [0, 1], real: 0, deviation: 0 }
+  ]
+});
+Mock.mock("http://localhost:8080/getStationData", {
+  data: [
+    { name: "南京市监控站", coord: [118.78, 32.04], value: 66, type: 0 },
+    { name: "江宁监控站", coord: [118.83, 31.95], value: 75, type: 1 },
+    { name: "六合监控站", coord: [118.83, 32.36], value: 90, type: 1 },
+    { name: "江浦监控站", coord: [118.62, 32.07], value: 106, type: 1 },
+    { name: "徐州监控站", coord: [117.2, 34.26], value: 158, type: 1 },
+    { name: "连云港监控站", coord: [119.16, 34.59], value: 43, type: 2 },
+    { name: "南通监控站", coord: [120.86, 32.01], value: 80, type: 2 },
+    { name: "苏州监控站", coord: [120.62, 31.32], value: 80, type: 3 },
+    { name: "无锡监控站", coord: [120.29, 31.59], value: 200, type: 3 },
+    { name: "常州监控站", coord: [119.95, 31.79], value: 80, type: 4 },
+    { name: "丰县监控站", coord: [116.57, 34.79], value: 95, type: 4 },
+    { name: "沛县监控站", coord: [116.93, 34.73], value: 80, type: 6 },
+    { name: "赣榆监控站", coord: [119.11, 34.83], value: 80, type: 1 },
+    { name: "东海监控站", coord: [118.75, 34.54], value: 80, type: 5 },
+    { name: "新沂监控站", coord: [118.33, 34.38], value: 80, type: 5 },
+    { name: "邳县监控站", coord: [117.97, 34.3], value: 43, type: 6 },
+    { name: "睢宁监控站", coord: [117.94, 34.89], value: 20, type: 1 },
+    { name: "太仓监控站", coord: [121.1, 31.45], value: 80, type: 1 }
   ]
 });

@@ -2,11 +2,11 @@
  * @Descripttion: 
  * @Author: Jason
  * @Date: 2021-02-22 22:50:14
- * @LastEditTime: 2021-02-25 22:56:02
+ * @LastEditTime: 2021-02-26 09:25:32
 -->
 
 <template>
-  <div class="container">
+  <div class="line-chart-container">
     <div class="change-button">
       <el-button type="primary" @click="goPmMap"
         >查看PM<font class="pm-small">2.5</font>实况分布</el-button
@@ -1015,7 +1015,7 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
-.container {
+.line-chart-container {
   width: auto;
   margin: 60px 32px 0 32px;
   height: 800px;
