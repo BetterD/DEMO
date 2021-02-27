@@ -1,34 +1,8 @@
 <!--
- * 
- * 　　┏┓　　　┏┓+ +
- * 　┏┛┻━━━┛┻┓ + +
- * 　┃　　　　　　　┃ 　
- * 　┃　　　━　　　┃ ++ + + +
- *  ████━████ ┃+
- * 　┃　　　　　　　┃ +
- * 　┃　　　┻　　　┃
- * 　┃　　　　　　　┃ + +
- * 　┗━┓　　　┏━┛
- * 　　　┃　　　┃　　　　　　　　　　　
- * 　　　┃　　　┃ + + + +
- * 　　　┃　　　┃
- * 　　　┃　　　┃ +  神兽保佑
- * 　　　┃　　　┃    代码无bug　　
- * 　　　┃　　　┃　　+　　　　　　　　　
- * 　　　┃　 　　┗━━━┓ + +
- * 　　　┃ 　　　　　　　┣┓
- * 　　　┃ 　　　　　　　┏┛
- * 　　　┗┓┓┏━┳┓┏┛ + + + +
- * 　　　　┃┫┫　┃┫┫
- * 　　　　┗┻┛　┗┻┛+ + + +
- * 
- -->
-
-<!--
  * @Descripttion: 
- * @Author: 中科博微 段世煜
+ * @Author: 段世煜
  * @Date: 2021-02-26 08:04:52
- * @LastEditTime: 2021-02-27 00:50:33
+ * @LastEditTime: 2021-02-27 11:16:14
 -->
 <!--
  * @Descripttion:    优：0~50    
@@ -387,7 +361,7 @@ export default {
       this.mapChart = this.$echarts.init(chartDom);
       let option;
       let points = [];
-      let val = [];
+      // 散点图数据处理
       for (let i in geoJson.children) {
         for (let j in this.tepData) {
           if (this.tepData[j].name == geoJson.children[i].name) {
@@ -399,7 +373,7 @@ export default {
           }
         }
       }
-      console.log(points);
+
       option = {
         tooltip: {
           trigger: "item",
@@ -477,6 +451,7 @@ export default {
           }
         ],
         series: [
+          // 热力图
           {
             type: "heatmap",
             visualMap: "tep",
@@ -485,6 +460,7 @@ export default {
             pointSize: 25,
             blurSize: 50
           },
+          // 散点图
           {
             name: "pm2.5",
             type: "scatter",
